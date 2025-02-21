@@ -16,7 +16,7 @@ from ..utility.nn_helpers import (
 )
 from neuralpredictors import regularizers
 from neuralpredictors.layers.readouts import PointPooled2d
-from neuralpredictors.layers.legacy import Gaussian2d
+from neuralpredictors.layers.readouts import Gaussian2d
 from .pretrained_models import TransferLearningCore
 
 # Squeeze and Excitation Block

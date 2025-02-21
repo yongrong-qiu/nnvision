@@ -7,7 +7,9 @@ import torch
 from torch import nn as nn
 
 from neuralpredictors.layers.attention import AttentionConv
-from neuralpredictors.layers.cores import DepthSeparableConv2d, Core2d, Stacked2dCore
+from neuralpredictors.layers.cores import Stacked2dCore
+from neuralpredictors.layers.cores.base import Core, ConvCore
+from neuralpredictors.layers import DepthSeparableConv2d
 from neuralpredictors import regularizers
 from .architectures import SQ_EX_Block
 
@@ -27,7 +29,7 @@ except:
 from .convnext_v2 import ConvNextV2
 
 
-class TransferLearningCore(Core2d, nn.Module):
+class TransferLearningCore(ConvCore, nn.Module):
     """
     A Class to create a Core based on a model class from torchvision.models.
     """
@@ -120,7 +122,7 @@ class TransferLearningCore(Core2d, nn.Module):
         return self.features.TransferLearning[-i].out_channels
 
 
-class SE2dCore(Core2d, nn.Module):
+class SE2dCore(ConvCore, nn.Module):
     def __init__(
         self,
         input_channels,
@@ -326,7 +328,7 @@ class SE2dCore(Core2d, nn.Module):
         return len(self.features) * self.hidden_channels
 
 
-class TaskDrivenCore3(Core2d, nn.Module):
+class TaskDrivenCore3(Core, nn.Module):
     def __init__(
         self,
         input_channels,
@@ -488,11 +490,13 @@ class TaskDrivenCore3(Core2d, nn.Module):
         # Overwrite parent class's initialize function
         if not self.pretrained:
             self.apply(self.init_conv)
-        self.put_to_cuda(cuda=cuda)
+        # self.put_to_cuda(cuda=cuda)
+        if cuda:
+            self.cuda()
 
 
 # TODO: extend this class to add final_nonlineartiy, batchnorm, layernorm
-class ConvNextCore(Core2d, nn.Module):
+class ConvNextCore(ConvCore, nn.Module):
     def __init__(
         self,
         model_name,
