@@ -39,7 +39,7 @@ except:
 
 try:
     from neuralpredictors.layers.cores import Stacked2dCore
-    from neuralpredictors.layers.legacy import Gaussian2d
+    from neuralpredictors.layers.readouts import Gaussian2d
     from neuralpredictors.layers.readouts import PointPooled2d, FullGaussian2d
     from neuralpredictors.layers.activations import (
         MultiplePiecewiseLinearExpNonlinearity,
